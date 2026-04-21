@@ -1,0 +1,757 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Poppins:wght@300;400;500;600&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  #dot-app {
+    --black: #0a0a0a;
+    --dark: #111111;
+    --dark-card: #181818;
+    --orange: #FF6B1A;
+    --orange-light: #FF8C4A;
+    --white: #f5f5f5;
+    --gray: #888888;
+    --gray-light: #cccccc;
+    --border: #2a2a2a;
+    --font-h: 'Montserrat', sans-serif;
+    --font-b: 'Poppins', sans-serif;
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-b);
+    font-size: 14px;
+    line-height: 1.7;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #dot-app a { color: inherit; text-decoration: none; cursor: pointer; }
+  #dot-app ul { list-style: none; }
+  #dot-app h1,h2,h3,h4 { font-family: var(--font-h); }
+
+  .dot-nav {
+    background: rgba(10,10,10,0.97);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .dot-nav .wrap {
+    max-width: 1000px; margin: 0 auto; padding: 0 24px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .dot-logo { font-family: var(--font-h); font-size: 22px; font-weight: 900; letter-spacing: 1px; color: var(--white); cursor:pointer; }
+  .dot-logo span { color: var(--orange); }
+  .dot-navlinks { display: flex; gap: 28px; align-items: center; }
+  .dot-navlinks a { font-size: 13px; font-weight: 500; color: var(--gray-light); transition: color .2s; }
+  .dot-navlinks a:hover, .dot-navlinks a.active { color: var(--white); }
+  .dot-navlinks a.active { border-bottom: 2px solid var(--orange); padding-bottom: 2px; }
+  .btn-p { background: var(--orange); color: #fff; font-family: var(--font-b); font-size: 13px; font-weight: 600; padding: 10px 22px; border-radius: 4px; border: none; cursor: pointer; transition: background .2s, transform .2s; }
+  .btn-p:hover { background: var(--orange-light); transform: translateY(-1px); }
+  .btn-o { background: transparent; color: var(--white); font-family: var(--font-b); font-size: 13px; font-weight: 600; padding: 9px 22px; border-radius: 4px; border: 1.5px solid var(--border); cursor: pointer; transition: border-color .2s, color .2s, transform .2s; }
+  .btn-o:hover { border-color: var(--orange); color: var(--orange); transform: translateY(-1px); }
+
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+  .section { padding: 80px 0; }
+  .section-label { font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--orange); display: block; margin-bottom: 10px; }
+  .section-title { font-family: var(--font-h); font-size: clamp(22px,3.5vw,36px); font-weight: 800; line-height: 1.15; color: var(--white); margin-bottom: 12px; }
+  .section-sub { font-size: 15px; color: var(--gray); max-width: 520px; line-height: 1.8; }
+  .divider { width: 40px; height: 3px; background: var(--orange); margin: 12px 0 24px; }
+  .text-o { color: var(--orange); }
+  .card { background: var(--dark-card); border: 1px solid var(--border); border-radius: 8px; padding: 24px; transition: border-color .2s, transform .2s; }
+  .card:hover { border-color: var(--orange); transform: translateY(-3px); }
+
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ---- HOME HERO ---- */
+  .hero {
+    min-height: 88vh; display: flex; align-items: center;
+    background: var(--dark); border-bottom: 1px solid var(--border);
+    position: relative; overflow: hidden; padding-top: 40px;
+  }
+  .hero::before {
+    content:''; position: absolute; top: -150px; right: -150px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,107,26,0.09) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; padding: 60px 0; }
+  .hero h1 { font-family: var(--font-h); font-size: clamp(28px,4vw,52px); font-weight: 900; line-height: 1.1; letter-spacing: -1px; margin-bottom: 16px; }
+  .hero p { font-size: 16px; color: var(--gray); line-height: 1.8; margin-bottom: 28px; max-width: 440px; }
+  .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  .hero-visual { position: relative; height: 360px; display: flex; align-items: center; justify-content: center; }
+  .hc { position: absolute; border-radius: 50%; border: 1px solid var(--border); }
+  .hc1 { width: 300px; height: 300px; animation: spin 20s linear infinite; }
+  .hc1::after { content:''; position:absolute; top:-3px; left:50%; width:6px; height:6px; background:var(--orange); border-radius:50%; transform:translateX(-50%); }
+  .hc2 { width: 160px; height: 160px; background: rgba(255,107,26,0.05); border-color: rgba(255,107,26,0.2); animation: spin 12s linear infinite reverse; }
+  .hc2::before { content:'DOT.'; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-family:var(--font-h); font-size:18px; font-weight:900; color:var(--orange); letter-spacing:2px; }
+  .dot-grid { position:absolute; bottom:20px; right:20px; width:100px; height:100px; background-image:radial-gradient(circle,var(--border) 1px,transparent 1px); background-size:14px 14px; opacity:0.5; }
+  @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+  /* About preview */
+  .about-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .about-text p { color: var(--gray); font-size: 14px; line-height: 1.8; }
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .stat-box { background: var(--dark-card); border: 1px solid var(--border); border-radius: 8px; padding: 22px; display: flex; flex-direction: column; gap: 6px; transition: border-color .2s; }
+  .stat-box:hover { border-color: var(--orange); }
+  .stat-num { font-family: var(--font-h); font-size: 34px; font-weight: 900; color: var(--white); line-height: 1; }
+  .stat-num em { color: var(--orange); font-style: normal; font-size: 24px; }
+  .stat-lbl { font-size: 12px; color: var(--gray); line-height: 1.5; }
+  .stat-box.hot { border-color: rgba(255,107,26,0.3); background: rgba(255,107,26,0.05); }
+
+  /* Services grid */
+  .srv-bg { background: var(--dark); border-top: 1px solid var(--border); }
+  .srv-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-top: 40px; }
+  .srv-card { display: flex; flex-direction: column; gap: 10px; }
+  .srv-icon { font-size: 30px; }
+  .srv-title { font-family: var(--font-h); font-size: 16px; font-weight: 700; color: var(--white); }
+  .srv-desc { font-size: 13px; color: var(--gray); line-height: 1.7; }
+
+  /* Why us */
+  .why-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .why-list { display: flex; flex-direction: column; gap: 12px; }
+  .why-item { display: flex; align-items: center; gap: 14px; background: var(--dark-card); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; font-size: 14px; color: var(--gray-light); transition: border-color .2s, transform .2s; }
+  .why-item:hover { border-color: var(--orange); transform: translateX(4px); }
+  .why-check { color: var(--orange); font-size: 16px; font-weight: 700; flex-shrink: 0; }
+
+  /* Process */
+  .process-bg { background: var(--dark); border-top: 1px solid var(--border); }
+  .process-steps { display: grid; grid-template-columns: repeat(5,1fr); gap: 14px; margin-top: 40px; }
+  .p-step { display: flex; flex-direction: column; gap: 10px; }
+  .p-num { font-family: var(--font-h); font-size: 11px; font-weight: 800; color: var(--orange); letter-spacing: 2px; background: rgba(255,107,26,0.1); border: 1px solid rgba(255,107,26,0.2); border-radius: 4px; padding: 5px 10px; width: fit-content; }
+  .p-title { font-family: var(--font-h); font-size: 14px; font-weight: 700; color: var(--white); }
+  .p-desc { font-size: 12px; color: var(--gray); line-height: 1.7; }
+
+  /* CTA banner */
+  .cta-banner { background: var(--dark); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 80px 0; position: relative; overflow: hidden; }
+  .cta-banner::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:400px; height:160px; background:radial-gradient(ellipse,rgba(255,107,26,0.07) 0%,transparent 70%); pointer-events:none; }
+  .cta-inner { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 24px; position: relative; }
+  .cta-line { width: 48px; height: 2px; background: var(--orange); }
+  .cta-h { font-family: var(--font-h); font-size: clamp(20px,3vw,34px); font-weight: 800; color: var(--white); max-width: 560px; line-height: 1.2; }
+
+  /* PAGE HERO (About/Services/Contact) */
+  .page-hero { padding: 100px 0 60px; background: var(--dark); border-bottom: 1px solid var(--border); text-align: center; }
+  .page-hero .section-sub { margin: 0 auto; text-align: center; }
+
+  /* ABOUT PAGE */
+  .about-page-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+  .about-page-intro p { color: var(--gray); font-size: 14px; line-height: 1.8; }
+  .exp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .exp-card { display: flex; flex-direction: column; gap: 6px; }
+  .exp-stat { font-family: var(--font-h); font-size: 30px; font-weight: 900; color: var(--orange); line-height: 1; }
+  .exp-lbl { font-size: 12px; color: var(--gray); line-height: 1.5; }
+  .trust-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-top: 40px; }
+  .trust-card { display: flex; flex-direction: column; gap: 10px; }
+  .trust-icon { font-size: 26px; }
+  .trust-title { font-family: var(--font-h); font-size: 14px; font-weight: 700; color: var(--white); }
+  .trust-desc { font-size: 12px; color: var(--gray); line-height: 1.7; }
+  .team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 700px; margin: 40px auto 0; }
+  .founder-card { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 36px 24px; }
+  .founder-avatar { width: 70px; height: 70px; border-radius: 50%; background: rgba(255,107,26,0.1); border: 2px solid var(--orange); display: flex; align-items: center; justify-content: center; font-family: var(--font-h); font-size: 18px; font-weight: 800; color: var(--orange); margin-bottom: 6px; }
+  .founder-name { font-family: var(--font-h); font-size: 17px; font-weight: 700; color: var(--white); }
+  .founder-role { font-size: 12px; color: var(--orange); font-weight: 500; letter-spacing: 0.5px; }
+  .founder-desc { font-size: 13px; color: var(--gray); line-height: 1.7; max-width: 260px; }
+  .mission-box { max-width: 640px; margin: 0 auto; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .mission-h { font-family: var(--font-h); font-size: clamp(22px,3vw,34px); font-weight: 800; color: var(--white); }
+  .mission-p { font-size: 17px; color: var(--gray); line-height: 1.7; font-style: italic; }
+
+  /* SERVICES PAGE */
+  .srv-page-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .srv-page-card { display: flex; flex-direction: column; gap: 12px; }
+  .srv-bullets { display: flex; flex-direction: column; gap: 7px; margin-top: 6px; }
+  .srv-bullets li { display: flex; align-items: center; gap: 9px; font-size: 13px; color: var(--gray-light); }
+  .srv-bullet { width: 5px; height: 5px; border-radius: 50%; background: var(--orange); flex-shrink: 0; }
+  .srv-process { background: var(--dark); border-top: 1px solid var(--border); }
+  .srv-pts { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-top: 40px; }
+  .srv-pt-label { font-family: var(--font-h); font-size: 16px; font-weight: 800; color: var(--orange); }
+  .srv-pt-desc { font-size: 12px; color: var(--gray); line-height: 1.7; margin-top: 6px; }
+
+  /* CONTACT PAGE */
+  .contact-wrap { display: grid; grid-template-columns: 1fr 360px; gap: 50px; align-items: start; }
+  .contact-form-h { font-family: var(--font-h); font-size: 20px; font-weight: 700; color: var(--white); margin-bottom: 6px; }
+  .contact-form-sub { color: var(--gray); font-size: 13px; margin-bottom: 22px; }
+  .cform { display: flex; flex-direction: column; gap: 14px; }
+  .cform-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .cform-group { display: flex; flex-direction: column; gap: 6px; }
+  .cform-group label { font-size: 12px; font-weight: 600; color: var(--gray-light); letter-spacing: 0.5px; }
+  .cform-group label span { color: var(--orange); }
+  .cform-group input, .cform-group select, .cform-group textarea {
+    background: var(--dark-card); border: 1px solid var(--border); border-radius: 4px;
+    color: var(--white); font-family: var(--font-b); font-size: 14px;
+    padding: 11px 14px; outline: none; width: 100%; transition: border-color .2s;
+  }
+  .cform-group input:focus, .cform-group select:focus, .cform-group textarea:focus { border-color: var(--orange); }
+  .cform-group input::placeholder, .cform-group textarea::placeholder { color: var(--gray); }
+  .cform-group select option { background: var(--dark-card); color: var(--white); }
+  .cform-group textarea { resize: vertical; min-height: 110px; }
+  .cform-error { font-size: 11px; color: #e05252; }
+  .input-err { border-color: #e05252 !important; }
+  .csidebar { display: flex; flex-direction: column; gap: 16px; }
+  .csidebar-sec { background: var(--dark-card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+  .csidebar-h { font-family: var(--font-h); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--white); padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .csidebar-item { display: flex; gap: 12px; align-items: flex-start; }
+  .csidebar-icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+  .csidebar-lbl { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gray); margin-bottom: 3px; }
+  .csidebar-val { display: block; font-size: 13px; color: var(--gray-light); line-height: 1.6; }
+  a.csidebar-val:hover { color: var(--orange); }
+  .csidebar-srv-list { display: flex; flex-direction: column; gap: 8px; }
+  .csidebar-srv-list li { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--gray-light); }
+  .csidebar-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--orange); flex-shrink: 0; }
+  .csidebar-badge { display: flex; align-items: flex-start; gap: 8px; background: rgba(255,107,26,0.07); border: 1px solid rgba(255,107,26,0.2); border-radius: 8px; padding: 14px; font-size: 12px; color: var(--gray-light); line-height: 1.6; }
+  .csidebar-badge strong { color: var(--orange); }
+  .contact-final { background: var(--dark); border-top: 1px solid var(--border); padding: 60px 0; text-align: center; }
+  .contact-final p { font-family: var(--font-h); font-size: clamp(15px,2.5vw,22px); font-weight: 700; color: var(--gray); font-style: italic; }
+  .contact-final p::before { content:'"'; color: var(--orange); }
+  .contact-final p::after { content:'"'; color: var(--orange); }
+  .success-box { text-align: center; padding: 50px 20px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .success-icon { width: 60px; height: 60px; border-radius: 50%; background: rgba(255,107,26,0.15); border: 2px solid var(--orange); display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--orange); }
+  .success-box h3 { font-family: var(--font-h); font-size: 22px; color: var(--white); }
+  .success-box p { color: var(--gray); font-size: 14px; max-width: 300px; }
+
+  /* FOOTER */
+  .dot-footer { background: var(--dark); border-top: 1px solid var(--border); padding: 60px 0 30px; }
+  .footer-top { display: grid; grid-template-columns: 2fr 1fr 1.5fr; gap: 50px; padding-bottom: 40px; border-bottom: 1px solid var(--border); }
+  .footer-logo { font-family: var(--font-h); font-size: 24px; font-weight: 900; letter-spacing: 1px; margin-bottom: 10px; }
+  .footer-logo span { color: var(--orange); }
+  .footer-tagline { color: var(--gray); font-size: 13px; max-width: 220px; line-height: 1.8; }
+  .footer-col-h { font-family: var(--font-h); font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--white); margin-bottom: 14px; }
+  .footer-links { display: flex; flex-direction: column; gap: 9px; }
+  .footer-links a { color: var(--gray); font-size: 13px; transition: color .2s; cursor: pointer; }
+  .footer-links a:hover { color: var(--orange); }
+  .footer-contact-list { display: flex; flex-direction: column; gap: 12px; }
+  .footer-contact-list li { display: flex; align-items: flex-start; gap: 8px; color: var(--gray); font-size: 13px; line-height: 1.6; }
+  .footer-contact-list a { color: var(--gray); transition: color .2s; }
+  .footer-contact-list a:hover { color: var(--orange); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 24px; color: var(--gray); font-size: 12px; }
+</style>
+
+<div id="dot-app">
+
+  <!-- NAVBAR -->
+  <header class="dot-nav">
+    <div class="wrap dot-nav">
+      <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;width:100%;max-width:1000px;margin:0 auto;padding:0 24px;">
+        <div class="dot-logo" onclick="showPage('home')">DOT<span>.</span></div>
+        <nav class="dot-navlinks">
+          <a onclick="showPage('home')" id="nav-home" class="active">Home</a>
+          <a onclick="showPage('about')" id="nav-about">About</a>
+          <a onclick="showPage('services')" id="nav-services">Services</a>
+          <a onclick="showPage('contact')" id="nav-contact">Contact</a>
+          <button class="btn-p" onclick="showPage('contact')">Book Consultation</button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- HOME PAGE -->
+  <div id="page-home" class="page active">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-inner">
+          <div>
+            <span class="section-label">DOT Consulting</span>
+            <h1>Driven by Insight.<br><span class="text-o">Designed for Impact.</span></h1>
+            <p>Your growth partner for building compliant, scalable, and revenue-ready businesses.</p>
+            <div class="hero-btns">
+              <button class="btn-p" onclick="showPage('contact')">Contact Us</button>
+              <button class="btn-o" onclick="showPage('services')">Explore Services</button>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="hc hc1"></div>
+            <div class="hc hc2"></div>
+            <div class="dot-grid"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Preview -->
+    <section class="section" style="background:var(--black)">
+      <div class="wrap">
+        <div class="about-inner">
+          <div class="about-text">
+            <span class="section-label">Who We Are</span>
+            <h2 class="section-title">We Are Not An Agency.<br><span class="text-o">We Are Your Business Allies.</span></h2>
+            <div class="divider"></div>
+            <p>DOT Consulting works with founders and leadership teams to build businesses that are structured, positioned, and ready to scale.</p>
+            <p style="margin-top:14px">We combine strategy, branding, legal, finance, and digital systems into one clear growth model.</p>
+            <button class="btn-o" style="margin-top:28px" onclick="showPage('about')">Learn More</button>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-box">
+              <div class="stat-num">50<em>+</em></div>
+              <div class="stat-lbl">Years Combined Experience</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num">9<em>+</em></div>
+              <div class="stat-lbl">Years Execution Experience</div>
+            </div>
+            <div class="stat-box hot">
+              <div class="stat-num">4</div>
+              <div class="stat-lbl">Core Service Areas</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num" style="font-size:28px">∞</div>
+              <div class="stat-lbl">Growth Potential</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Preview -->
+    <section class="section srv-bg">
+      <div class="wrap">
+        <span class="section-label">What We Do</span>
+        <h2 class="section-title">Our Core Services</h2>
+        <div class="srv-grid">
+          <div class="card srv-card">
+            <div class="srv-icon">🎯</div>
+            <div class="srv-title">Strategy & Advisory</div>
+            <div class="srv-desc">Business planning, market entry, GTM strategy, scaling roadmap.</div>
+          </div>
+          <div class="card srv-card">
+            <div class="srv-icon">✦</div>
+            <div class="srv-title">Brand Consulting</div>
+            <div class="srv-desc">Brand identity, positioning, messaging, rebranding.</div>
+          </div>
+          <div class="card srv-card">
+            <div class="srv-icon">📈</div>
+            <div class="srv-title">Digital Marketing</div>
+            <div class="srv-desc">Performance marketing, lead generation, funnels, CRM systems.</div>
+          </div>
+          <div class="card srv-card">
+            <div class="srv-icon">⚖️</div>
+            <div class="srv-title">Legal & Finance</div>
+            <div class="srv-desc">Company setup, tax compliance, funding readiness, structuring.</div>
+          </div>
+        </div>
+        <div style="text-align:center;margin-top:40px">
+          <button class="btn-o" onclick="showPage('services')">View All Services</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="section" style="background:var(--black);border-top:1px solid var(--border)">
+      <div class="wrap">
+        <div class="why-inner">
+          <div>
+            <span class="section-label">Our Advantage</span>
+            <h2 class="section-title">Why Businesses Choose<br><span class="text-o">DOT Consulting</span></h2>
+            <div class="divider"></div>
+            <p class="section-sub">We don't just advise — we build alongside you with the expertise your business deserves.</p>
+          </div>
+          <ul class="why-list">
+            <li class="why-item"><span class="why-check">✓</span> Strategy-led growth planning</li>
+            <li class="why-item"><span class="why-check">✓</span> Cross-functional business expertise</li>
+            <li class="why-item"><span class="why-check">✓</span> Clear systems for scaling</li>
+            <li class="why-item"><span class="why-check">✓</span> Long-term business thinking</li>
+            <li class="why-item"><span class="why-check">✓</span> Focus on measurable outcomes</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Process -->
+    <section class="section process-bg">
+      <div class="wrap">
+        <span class="section-label">Our Approach</span>
+        <h2 class="section-title">How We Work</h2>
+        <div class="process-steps">
+          <div class="p-step"><div class="p-num">01</div><div class="p-title">Diagnose</div><div class="p-desc">Understand your business needs and current challenges.</div></div>
+          <div class="p-step"><div class="p-num">02</div><div class="p-title">Define</div><div class="p-desc">Create a clear growth strategy tailored to your goals.</div></div>
+          <div class="p-step"><div class="p-num">03</div><div class="p-title">Design</div><div class="p-desc">Build the right systems and structures for scale.</div></div>
+          <div class="p-step"><div class="p-num">04</div><div class="p-title">Execute</div><div class="p-desc">Take priority actions with speed and precision.</div></div>
+          <div class="p-step"><div class="p-num">05</div><div class="p-title">Support</div><div class="p-desc">Stay by your side for long-term sustained growth.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="cta-banner">
+      <div class="wrap cta-inner">
+        <div class="cta-line"></div>
+        <div class="cta-h">Let's Connect The Dots Of Your Business Growth.</div>
+        <button class="btn-p" style="font-size:15px;padding:14px 36px" onclick="showPage('contact')">Book a Consultation</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ABOUT PAGE -->
+  <div id="page-about" class="page">
+    <section class="page-hero">
+      <div class="wrap">
+        <span class="section-label">About Us</span>
+        <h1 class="section-title">Built for Founders.<br><span class="text-o">Designed for Growth.</span></h1>
+        <p class="section-sub">Helping businesses move from concept to structured scale.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="about-page-intro">
+          <div>
+            <span class="section-label">Our Story</span>
+            <h2 class="section-title">Who We Are</h2>
+            <div class="divider"></div>
+            <p>DOT Consulting is a strategic advisory firm that helps businesses grow with clarity. We work with startups, SMEs, and established brands to solve growth challenges through strategy, systems, branding, finance, and digital execution.</p>
+            <p style="margin-top:14px">Our goal is simple: <strong style="color:var(--white)">build stronger businesses.</strong></p>
+          </div>
+          <div class="exp-grid">
+            <div class="card exp-card"><div class="exp-stat">50+</div><div class="exp-lbl">Years combined advisory experience</div></div>
+            <div class="card exp-card"><div class="exp-stat">9+</div><div class="exp-lbl">Years execution experience</div></div>
+            <div class="card exp-card"><div class="exp-stat" style="font-size:26px">Multi</div><div class="exp-lbl">Industry exposure</div></div>
+            <div class="card exp-card"><div class="exp-stat">100%</div><div class="exp-lbl">Founder-focused approach</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section srv-bg">
+      <div class="wrap">
+        <span class="section-label">Credibility</span>
+        <h2 class="section-title">Why Trust Us</h2>
+        <div class="trust-grid">
+          <div class="card trust-card"><div class="trust-icon">🏆</div><div class="trust-title">50+ Years Combined</div><div class="trust-desc">Decades of advisory experience across multiple industries and business models.</div></div>
+          <div class="card trust-card"><div class="trust-icon">⚡</div><div class="trust-title">Execution Focused</div><div class="trust-desc">We don't just advise — we roll up our sleeves and execute alongside you.</div></div>
+          <div class="card trust-card"><div class="trust-icon">🌍</div><div class="trust-title">Multi-Industry</div><div class="trust-desc">Broad cross-sector experience means we bring the best ideas from every field.</div></div>
+          <div class="card trust-card"><div class="trust-icon">🎯</div><div class="trust-title">Growth-First Mindset</div><div class="trust-desc">Every recommendation is filtered through one question: does this drive growth?</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background:var(--black);border-top:1px solid var(--border)">
+      <div class="wrap">
+        <span class="section-label">The People Behind DOT</span>
+        <h2 class="section-title">Leadership Team</h2>
+        <div class="team-grid">
+          <div class="card founder-card">
+            <div class="founder-avatar">PJ</div>
+            <div class="founder-name">Pratik Jatale</div>
+            <div class="founder-role">Founder & Principal Business Strategist</div>
+            <div class="founder-desc">Helps founders build strong market positioning and scale confidently.</div>
+          </div>
+          <div class="card founder-card">
+            <div class="founder-avatar">AJ</div>
+            <div class="founder-name">CA Arpit Jain</div>
+            <div class="founder-role">Co-Founder & Legal + Financial Architect</div>
+            <div class="founder-desc">Helps businesses create strong structures, stay compliant, and become investment ready.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section srv-bg">
+      <div class="wrap">
+        <div class="mission-box">
+          <span class="section-label">What Drives Us</span>
+          <div class="mission-h">Our Mission</div>
+          <div class="mission-p">To help ambitious businesses grow with clarity, confidence, and the right systems.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="cta-banner">
+      <div class="wrap cta-inner">
+        <div class="cta-line"></div>
+        <div class="cta-h">Ready to build a stronger business?</div>
+        <button class="btn-p" style="font-size:15px;padding:14px 36px" onclick="showPage('contact')">Book a Consultation</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICES PAGE -->
+  <div id="page-services" class="page">
+    <section class="page-hero">
+      <div class="wrap">
+        <span class="section-label">What We Offer</span>
+        <h1 class="section-title">Business Growth Services<br><span class="text-o">Under One Roof</span></h1>
+        <p class="section-sub">Strategy, brand, marketing, legal and finance solutions built for growth.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="srv-page-grid">
+          <div class="card srv-page-card">
+            <div class="srv-icon">🎯</div>
+            <div class="srv-title">Strategy & Advisory</div>
+            <div class="srv-desc">We help businesses make smarter decisions and create growth roadmaps.</div>
+            <ul class="srv-bullets">
+              <li><span class="srv-bullet"></span>Startup Guidance</li>
+              <li><span class="srv-bullet"></span>GTM Strategy</li>
+              <li><span class="srv-bullet"></span>Market Entry</li>
+              <li><span class="srv-bullet"></span>Business Planning</li>
+              <li><span class="srv-bullet"></span>Scaling Strategy</li>
+            </ul>
+          </div>
+          <div class="card srv-page-card">
+            <div class="srv-icon">✦</div>
+            <div class="srv-title">Brand Consulting</div>
+            <div class="srv-desc">We build brands people trust, remember, and choose.</div>
+            <ul class="srv-bullets">
+              <li><span class="srv-bullet"></span>Brand Identity</li>
+              <li><span class="srv-bullet"></span>Positioning</li>
+              <li><span class="srv-bullet"></span>Messaging</li>
+              <li><span class="srv-bullet"></span>Rebranding</li>
+              <li><span class="srv-bullet"></span>Brand Guidelines</li>
+            </ul>
+          </div>
+          <div class="card srv-page-card">
+            <div class="srv-icon">📈</div>
+            <div class="srv-title">Digital Marketing</div>
+            <div class="srv-desc">We create marketing systems that generate leads and revenue.</div>
+            <ul class="srv-bullets">
+              <li><span class="srv-bullet"></span>Meta Ads</li>
+              <li><span class="srv-bullet"></span>Google Ads</li>
+              <li><span class="srv-bullet"></span>Social Media Campaigns</li>
+              <li><span class="srv-bullet"></span>Funnels & CRM Setup</li>
+              <li><span class="srv-bullet"></span>Lead Generation</li>
+            </ul>
+          </div>
+          <div class="card srv-page-card">
+            <div class="srv-icon">⚖️</div>
+            <div class="srv-title">Legal & Finance</div>
+            <div class="srv-desc">We make businesses legally strong and financially ready to scale.</div>
+            <ul class="srv-bullets">
+              <li><span class="srv-bullet"></span>Company Registration</li>
+              <li><span class="srv-bullet"></span>Tax Compliance</li>
+              <li><span class="srv-bullet"></span>Structuring</li>
+              <li><span class="srv-bullet"></span>Funding Documents</li>
+              <li><span class="srv-bullet"></span>Investor Readiness</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section srv-process">
+      <div class="wrap">
+        <span class="section-label">Our Commitment</span>
+        <h2 class="section-title">One Firm. Full Coverage.</h2>
+        <p class="section-sub" style="margin-top:12px">Instead of hiring four different agencies, you get one integrated team that understands your full business picture.</p>
+        <div class="srv-pts">
+          <div class="card"><div class="srv-pt-label">Integrated</div><div class="srv-pt-desc">All services work together — no silos.</div></div>
+          <div class="card"><div class="srv-pt-label">Tailored</div><div class="srv-pt-desc">Custom plans, not cookie-cutter packages.</div></div>
+          <div class="card"><div class="srv-pt-label">Accountable</div><div class="srv-pt-desc">We own outcomes, not just deliverables.</div></div>
+          <div class="card"><div class="srv-pt-label">Long-Term</div><div class="srv-pt-desc">Partners for growth, not one-time vendors.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="cta-banner">
+      <div class="wrap cta-inner">
+        <div class="cta-line"></div>
+        <div class="cta-h">Need a Custom Growth Plan?</div>
+        <button class="btn-p" style="font-size:15px;padding:14px 36px" onclick="showPage('contact')">Book Consultation</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT PAGE -->
+  <div id="page-contact" class="page">
+    <section class="page-hero">
+      <div class="wrap">
+        <span class="section-label">Get In Touch</span>
+        <h1 class="section-title">Let's Build<br><span class="text-o">What's Next.</span></h1>
+        <p class="section-sub">Talk to our team about your business goals.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="contact-wrap">
+          <div>
+            <div class="contact-form-h">Send Us a Message</div>
+            <div class="contact-form-sub">Fill in the form and we'll respond within 24 hours.</div>
+            <div id="contact-form-area">
+              <div class="cform">
+                <div class="cform-row">
+                  <div class="cform-group">
+                    <label>Full Name <span>*</span></label>
+                    <input type="text" id="cf-name" placeholder="John Smith">
+                    <span class="cform-error" id="err-name"></span>
+                  </div>
+                  <div class="cform-group">
+                    <label>Company Name</label>
+                    <input type="text" id="cf-company" placeholder="Your Company">
+                  </div>
+                </div>
+                <div class="cform-row">
+                  <div class="cform-group">
+                    <label>Email <span>*</span></label>
+                    <input type="email" id="cf-email" placeholder="you@company.com">
+                    <span class="cform-error" id="err-email"></span>
+                  </div>
+                  <div class="cform-group">
+                    <label>Phone Number <span>*</span></label>
+                    <input type="tel" id="cf-phone" placeholder="+91 98765 43210">
+                    <span class="cform-error" id="err-phone"></span>
+                  </div>
+                </div>
+                <div class="cform-group">
+                  <label>Service Needed <span>*</span></label>
+                  <select id="cf-service">
+                    <option value="">Select a service...</option>
+                    <option>Strategy & Advisory</option>
+                    <option>Brand Consulting</option>
+                    <option>Digital Marketing</option>
+                    <option>Legal & Finance</option>
+                    <option>Other / Not Sure</option>
+                  </select>
+                  <span class="cform-error" id="err-service"></span>
+                </div>
+                <div class="cform-group">
+                  <label>Message <span>*</span></label>
+                  <textarea id="cf-message" placeholder="Tell us about your business and what you're looking to achieve..."></textarea>
+                  <span class="cform-error" id="err-msg"></span>
+                </div>
+                <div>
+                  <button class="btn-p" style="font-size:15px;padding:14px 32px" onclick="submitForm()">Submit Inquiry →</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="csidebar">
+            <div class="csidebar-sec">
+              <div class="csidebar-h">Contact Details</div>
+              <div class="csidebar-item">
+                <div class="csidebar-icon">✉</div>
+                <div>
+                  <span class="csidebar-lbl">Email</span>
+                  <a href="mailto:hello@dotconsulting.co.in" class="csidebar-val">hello@dotconsulting.co.in</a>
+                </div>
+              </div>
+              <div class="csidebar-item">
+                <div class="csidebar-icon">📍</div>
+                <div>
+                  <span class="csidebar-lbl">Address</span>
+                  <span class="csidebar-val">MZ-2, Central Business Park,<br>1FA Scheme No.94,<br>Indore, India</span>
+                </div>
+              </div>
+            </div>
+            <div class="csidebar-sec">
+              <div class="csidebar-h">Services We Offer</div>
+              <ul class="csidebar-srv-list">
+                <li><span class="csidebar-dot"></span>Strategy & Advisory</li>
+                <li><span class="csidebar-dot"></span>Brand Consulting</li>
+                <li><span class="csidebar-dot"></span>Digital Marketing</li>
+                <li><span class="csidebar-dot"></span>Legal & Finance</li>
+              </ul>
+            </div>
+            <div class="csidebar-badge">
+              <span>⚡</span>
+              <span>We typically respond within <strong>24 hours</strong>.</span>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <div class="contact-final">
+      <div class="wrap">
+        <p>Your next growth move starts with one conversation.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="dot-footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <div>
+          <div class="footer-logo">DOT<span>.</span></div>
+          <div class="footer-tagline">Connecting the dots of your business growth.</div>
+        </div>
+        <div>
+          <div class="footer-col-h">Quick Links</div>
+          <ul class="footer-links">
+            <li><a onclick="showPage('home')">Home</a></li>
+            <li><a onclick="showPage('about')">About</a></li>
+            <li><a onclick="showPage('services')">Services</a></li>
+            <li><a onclick="showPage('contact')">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-col-h">Contact</div>
+          <ul class="footer-contact-list">
+            <li><span>✉</span><a href="mailto:hello@dotconsulting.co.in">hello@dotconsulting.co.in</a></li>
+            <li><span>📍</span><span>MZ-2, Central Business Park, Indore, India</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 DOT Consulting. All rights reserved.</span>
+        <span>Built for founders. Designed for growth.</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.dot-navlinks a[id^="nav-"]').forEach(a => a.classList.remove('active'));
+  const navEl = document.getElementById('nav-' + id);
+  if (navEl) navEl.classList.add('active');
+  document.getElementById('dot-app').scrollIntoView({behavior:'smooth'});
+}
+
+function submitForm() {
+  let valid = true;
+  const fields = [
+    { id: 'cf-name',    err: 'err-name',    msg: 'Full name is required.' },
+    { id: 'cf-email',   err: 'err-email',   msg: 'Valid email is required.', regex: /\S+@\S+\.\S+/ },
+    { id: 'cf-phone',   err: 'err-phone',   msg: 'Phone number is required.' },
+    { id: 'cf-service', err: 'err-service', msg: 'Please select a service.' },
+    { id: 'cf-message', err: 'err-msg',     msg: 'Message is required.' },
+  ];
+  fields.forEach(f => {
+    const el = document.getElementById(f.id);
+    const errEl = document.getElementById(f.err);
+    const val = el.value.trim();
+    let error = '';
+    if (!val) error = f.msg;
+    else if (f.regex && !f.regex.test(val)) error = f.msg;
+    errEl.textContent = error;
+    el.classList.toggle('input-err', !!error);
+    if (error) valid = false;
+  });
+  if (!valid) return;
+  document.getElementById('contact-form-area').innerHTML = `
+    <div class="success-box">
+      <div class="success-icon">✓</div>
+      <h3>Inquiry Sent!</h3>
+      <p>Thank you for reaching out. We'll get back to you within 24 hours.</p>
+      <button class="btn-o" style="margin-top:8px" onclick="resetForm()">Send Another Message</button>
+    </div>`;
+}
+
+function resetForm() {
+  document.getElementById('contact-form-area').innerHTML = `
+    <div class="cform">
+      <div class="cform-row">
+        <div class="cform-group"><label>Full Name <span>*</span></label><input type="text" id="cf-name" placeholder="John Smith"><span class="cform-error" id="err-name"></span></div>
+        <div class="cform-group"><label>Company Name</label><input type="text" id="cf-company" placeholder="Your Company"></div>
+      </div>
+      <div class="cform-row">
+        <div class="cform-group"><label>Email <span>*</span></label><input type="email" id="cf-email" placeholder="you@company.com"><span class="cform-error" id="err-email"></span></div>
+        <div class="cform-group"><label>Phone Number <span>*</span></label><input type="tel" id="cf-phone" placeholder="+91 98765 43210"><span class="cform-error" id="err-phone"></span></div>
+      </div>
+      <div class="cform-group"><label>Service Needed <span>*</span></label><select id="cf-service"><option value="">Select a service...</option><option>Strategy & Advisory</option><option>Brand Consulting</option><option>Digital Marketing</option><option>Legal & Finance</option><option>Other / Not Sure</option></select><span class="cform-error" id="err-service"></span></div>
+      <div class="cform-group"><label>Message <span>*</span></label><textarea id="cf-message" placeholder="Tell us about your business..."></textarea><span class="cform-error" id="err-msg"></span></div>
+      <div><button class="btn-p" style="font-size:15px;padding:14px 32px" onclick="submitForm()">Submit Inquiry →</button></div>
+    </div>`;
+}
+</script>
